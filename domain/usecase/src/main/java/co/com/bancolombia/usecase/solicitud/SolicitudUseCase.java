@@ -44,7 +44,7 @@ public class SolicitudUseCase {
     private Mono<Boolean> validacionTipoPrestamo(Solicitud solicitud) {
         return tipoPrestamoRepository.findAllTipoPrestamo()
                 .map(TipoPrestamo::getNombre)
-                .any(nombre -> nombre.equals(solicitud.getTipoPrestamo()));
+                .any(nombre -> nombre.equals(solicitud.getTipoPrestamo().getNombre()));
     }
 
 }

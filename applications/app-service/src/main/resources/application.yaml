@@ -4,7 +4,7 @@ spring:
   webflux:
     base-path: /solicitud
   application:
-    name: "solicitudes"
+    name: "/solicitudes"
   devtools:
     add-properties: false
   h2:
