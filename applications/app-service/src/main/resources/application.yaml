@@ -2,9 +2,9 @@ server:
   port: 8081
 spring:
   webflux:
-    base-path: /solicitud
+    base-path: /solicitudes
   application:
-    name: "/solicitudes"
+    name: "solicitudes"
   devtools:
     add-properties: false
   h2:
