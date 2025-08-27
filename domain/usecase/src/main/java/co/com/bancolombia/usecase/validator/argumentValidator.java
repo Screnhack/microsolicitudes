@@ -24,4 +24,10 @@ public class argumentValidator {
         }
     }
 
+    public static <T extends Number & Comparable<T>> void validarNumeroMayorACeroInteger(Integer valor, String mensaje) {
+        if (valor == null || valor <= 0) {
+            throw new ExcepcionArgumentos(mensaje);
+        }
+    }
+
 }

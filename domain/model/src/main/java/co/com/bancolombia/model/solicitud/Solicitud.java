@@ -11,10 +11,10 @@ import lombok.*;
 @Builder(toBuilder = true)
 public class Solicitud {
     private Long id_solicitud;
-    private Integer monto;
+    private Long monto;
     private String documentoIdentidad;
     private Integer plazo;
     private String email;
     private String estado;
-    private TipoPrestamo tipoPrestamo;
+    private String tipoPrestamo;
 }

@@ -26,7 +26,7 @@ public class SolicitudUseCase {
         try {
             argumentValidator.validarRequeridos(solicitud.getDocumentoIdentidad(), EL_DOCUMENTO_DEL_CLIENTE_NO_PUEDE_SER_NULO);
             argumentValidator.validarNumeroMayorACero(solicitud.getMonto(), EL_MONTO_SOLICITADO_NO_PUEDE_SER_NULO);
-            argumentValidator.validarNumeroMayorACero(solicitud.getPlazo(), EL_PLAZO_SOLICITADO_NO_PUEDE_SER_NULO);
+            argumentValidator.validarNumeroMayorACeroInteger(solicitud.getPlazo(), EL_PLAZO_SOLICITADO_NO_PUEDE_SER_NULO);
         } catch (ExcepcionArgumentos e) {
             return Mono.error(e);
         }
@@ -44,7 +44,7 @@ public class SolicitudUseCase {
     private Mono<Boolean> validacionTipoPrestamo(Solicitud solicitud) {
         return tipoPrestamoRepository.findAllTipoPrestamo()
                 .map(TipoPrestamo::getNombre)
-                .any(nombre -> nombre.equals(solicitud.getTipoPrestamo().getNombre()));
+                .any(nombre -> nombre.equals(solicitud.getTipoPrestamo()));
     }
 
 }
