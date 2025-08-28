@@ -9,6 +9,7 @@ import co.com.bancolombia.r2dbc.entity.TipoPrestamoEntity;
 import co.com.bancolombia.r2dbc.helper.ReactiveAdapterOperations;
 import org.reactivecommons.utils.ObjectMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Flux;
 
 @Repository
@@ -29,6 +30,7 @@ public class TipoPrestamoRepositoryAdapter extends ReactiveAdapterOperations<
 
 
     @Override
+    @Transactional
     public Flux<TipoPrestamo> findAllTipoPrestamo() {
         return findAll();
     }
