@@ -4,6 +4,11 @@ import co.com.bancolombia.model.solicitud.Solicitud;
 import co.com.bancolombia.usecase.exception.ExcepcionArgumentos;
 import co.com.bancolombia.usecase.exception.ExcepcionNoExisteTipoPrestamo;
 import co.com.bancolombia.usecase.solicitud.SolicitudUseCase;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +35,29 @@ public class SolicitudHandler {
         return ServerResponse.ok().bodyValue("");
     }
 
+    @Operation(
+            operationId = "saveSolicitud",
+            summary = "Crear una nueva solicitud",
+            description = "Guarda una nueva solicitud de préstamo. Se requiere un objeto Solicitud en el cuerpo de la petición.",
+            tags = {"Solicitudes"},
+            requestBody = @RequestBody(
+                    description = "Datos de la solicitud a crear",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = Solicitud.class))
+            ),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Solicitud creada exitosamente",
+                            content = @Content(schema = @Schema(implementation = Solicitud.class))
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "La solicitud es inválida o el tipo de préstamo no existe.",
+                            content = @Content(schema = @Schema(implementation = String.class))
+                    )
+            }
+    )
     public Mono<ServerResponse> listenSaveSolicitudPOSTUseCase(ServerRequest serverRequest) {
         log.info("Petición recibida para guardar una nueva Solicitud");
         return serverRequest.bodyToMono(Solicitud.class)

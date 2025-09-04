@@ -1,5 +1,6 @@
 package co.com.bancolombia.config;
 
+import co.com.bancolombia.model.autenticacion.gateways.AutenticacionRepository;
 import co.com.bancolombia.model.solicitud.gateways.SolicitudRepository;
 import co.com.bancolombia.model.tipoprestamo.gateways.TipoPrestamoRepository;
 import co.com.bancolombia.usecase.solicitud.SolicitudUseCase;
@@ -19,8 +20,9 @@ public class UseCasesConfig {
 
     @Bean
     public SolicitudUseCase solicitudUseCase(SolicitudRepository solicitudRepository,
-                                             TipoPrestamoRepository tipoPrestamoRepository) {
-        return new SolicitudUseCase(solicitudRepository, tipoPrestamoRepository);
+                                             TipoPrestamoRepository tipoPrestamoRepository,
+                                             AutenticacionRepository autenticacionRepository) {
+        return new SolicitudUseCase(solicitudRepository, tipoPrestamoRepository, autenticacionRepository);
     }
 
     public TipoPrestamoUseCase tipoPrestamoUseCase() {
