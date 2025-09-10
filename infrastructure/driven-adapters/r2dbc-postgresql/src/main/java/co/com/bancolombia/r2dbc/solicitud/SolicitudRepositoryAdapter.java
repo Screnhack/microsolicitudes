@@ -5,7 +5,11 @@ import co.com.bancolombia.model.solicitud.gateways.SolicitudRepository;
 import co.com.bancolombia.r2dbc.entity.SolicitudEntity;
 import co.com.bancolombia.r2dbc.helper.ReactiveAdapterOperations;
 import org.reactivecommons.utils.ObjectMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Repository
 public class SolicitudRepositoryAdapter extends ReactiveAdapterOperations<
@@ -23,5 +27,8 @@ public class SolicitudRepositoryAdapter extends ReactiveAdapterOperations<
         super(repository, mapper, d -> mapper.map(d, Solicitud.class/* change for domain model */));
     }
 
-
+    @Override
+    public Mono<Long> count() {
+        return this.repository.count();
+    }
 }

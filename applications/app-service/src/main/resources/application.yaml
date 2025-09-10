@@ -35,4 +35,8 @@ cors:
 services:
   authentication-service:
     base-url: "http://localhost:8080"
+jwt:
+  secret: d8206c23d2708ed420f4096768adde814a623e757120184edc98fc74f36951ade397ea9a809b576bf543dc47e7df26d0e723749334c35267507ef755e8f0caaa
+  expiration: 3600000
+
 

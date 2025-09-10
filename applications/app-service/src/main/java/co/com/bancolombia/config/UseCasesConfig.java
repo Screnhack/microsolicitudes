@@ -3,6 +3,7 @@ package co.com.bancolombia.config;
 import co.com.bancolombia.model.autenticacion.gateways.AutenticacionRepository;
 import co.com.bancolombia.model.solicitud.gateways.SolicitudRepository;
 import co.com.bancolombia.model.tipoprestamo.gateways.TipoPrestamoRepository;
+import co.com.bancolombia.usecase.solicitud.SolicitudListGetAll;
 import co.com.bancolombia.usecase.solicitud.SolicitudUseCase;
 import co.com.bancolombia.usecase.tipoprestamo.TipoPrestamoUseCase;
 import org.springframework.context.annotation.Bean;
@@ -25,8 +26,14 @@ public class UseCasesConfig {
         return new SolicitudUseCase(solicitudRepository, tipoPrestamoRepository, autenticacionRepository);
     }
 
+    @Bean
     public TipoPrestamoUseCase tipoPrestamoUseCase() {
         return new TipoPrestamoUseCase();
+    }
+
+    @Bean
+    public SolicitudListGetAll solicitudListGetAll(SolicitudRepository solicitudRepository) {
+        return new SolicitudListGetAll(solicitudRepository);
     }
 
 }

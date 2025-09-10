@@ -3,6 +3,7 @@ package co.com.bancolombia.api.solicitud;
 import co.com.bancolombia.model.solicitud.Solicitud;
 import co.com.bancolombia.usecase.exception.ExcepcionArgumentos;
 import co.com.bancolombia.usecase.exception.ExcepcionNoExisteTipoPrestamo;
+import co.com.bancolombia.usecase.solicitud.SolicitudListGetAll;
 import co.com.bancolombia.usecase.solicitud.SolicitudUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,11 +13,17 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -24,10 +31,24 @@ public class SolicitudHandler {
 
     private static final Logger log = LoggerFactory.getLogger(SolicitudUseCase.class);
     private final SolicitudUseCase solicitudUseCase;
+    private final SolicitudListGetAll solicitudListGetAll;
 
-    public Mono<ServerResponse> listenGETUseCase(ServerRequest serverRequest) {
-        // useCase.logic();
-        return ServerResponse.ok().bodyValue("");
+    public Mono<ServerResponse> listenGETSolicitudUseCase(ServerRequest serverRequest) {
+
+        int page = serverRequest.queryParam("page").map(Integer::parseInt).orElse(0);
+        int size = serverRequest.queryParam("size").map(Integer::parseInt).orElse(10);
+
+        Pageable pageable = PageRequest.of(page, size);
+        Mono<Long> totalCount = solicitudListGetAll.getDataCount();
+        Mono<List<Solicitud>> listSolicitudes = solicitudListGetAll.getPaginatedSolicitudes();
+        Mono<Page<Solicitud>> listPaginate = Mono.zip(listSolicitudes, totalCount)
+                .map(tuple -> new PageImpl<>(tuple.getT1(), pageable, tuple.getT2()));
+
+        return listPaginate
+                .flatMap(pageResult ->
+                        ServerResponse.ok()
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .bodyValue(pageResult));
     }
 
     public Mono<ServerResponse> listenGETOtherUseCase(ServerRequest serverRequest) {
